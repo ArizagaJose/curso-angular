@@ -14,11 +14,11 @@ import { ajax, AjaxResponse } from 'rxjs/ajax';
 export class FormDestinoViajeComponent implements OnInit {
   @Output() onItemAdded: EventEmitter<DestinoViaje>
   fg: FormGroup
-  minLongitud = 3
-  searchResults: string[]
+  minLongitud = 3;
+  searchResults: string[];
 
   constructor(fb: FormBuilder) {
-    this.onItemAdded = new EventEmitter()
+    this.onItemAdded = new EventEmitter();
     this.fg = fb.group({
       nombre: ['', Validators.compose([
         Validators.required,
@@ -29,20 +29,21 @@ export class FormDestinoViajeComponent implements OnInit {
     })
 
     this.fg.valueChanges.subscribe((form: any) => {
-      console.log('cambio el formulario: ', form)
+      console.log('cambio el formulario: ', form);
     })
   }
 
   ngOnInit(): void {
-    const elemNombre = <HTMLInputElement>document.getElementById("nombre")
+    const elemNombre = <HTMLInputElement>document.getElementById("nombre");
     fromEvent(elemNombre, 'input')
       .pipe(
         map((e: KeyboardEvent) => (e.target as HTMLInputElement).value),
         filter(text => text.length > 2),
         debounceTime(200),
         distinctUntilChanged(),
-        switchMap(() => ajax("/assets/datos.json"))
+        switchMap(() => ajax('/assets/datos.json'))
       ).subscribe(AjaxResponse => {
+        console.log(AjaxResponse.response)
         this.searchResults = AjaxResponse.response
       })
   }

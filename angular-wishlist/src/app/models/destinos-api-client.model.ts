@@ -8,17 +8,13 @@ import { Injectable } from '@angular/core';
 
 export class DestinosApiClient {
     destinos: DestinoViaje[];
-    public nombre: string;
-    public url: string;
     current: Subject<DestinoViaje> = new BehaviorSubject<DestinoViaje>(null);
 
     constructor() {
-        this.nombre = "";
-        this.url = "";
-        this.destinos = []
+        this.destinos = [];
     }
 
-    add(d: DestinoViaje) {
+    add(d: DestinoViaje): void {
         this.destinos.push(d);
     }
 
@@ -27,16 +23,16 @@ export class DestinosApiClient {
     }
 
     getById(id: string): DestinoViaje{
-        return this.destinos.filter(function(d){return d.id.toString() === id})[0];
+        return this.destinos.filter(function(d) {return d.id.toString() === id; })[0];
     }
 
-    elegir(d: DestinoViaje) {
+    elegir(d: DestinoViaje): void {
         this.destinos.forEach(x => x.setSelected(false));
         d.setSelected(true);
         this.current.next(d);
-    } 
+    }
 
-    subscribedOnChange(fn) {
+    subscribedOnChange(fn): void {
         this.current.subscribe(fn);
     }
 }
