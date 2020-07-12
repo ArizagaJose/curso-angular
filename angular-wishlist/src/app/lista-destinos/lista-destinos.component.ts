@@ -13,6 +13,7 @@ import { ElegidoFavoritoAction, NuevoDestinoAction } from '../models/destinos-vi
 export class ListaDestinosComponent implements OnInit {
   @Output() onItemAdded: EventEmitter<DestinoViaje>;
   updates: string[];
+  all;
 
 
   constructor(public destinosApiClient: DestinosApiClient, private store: Store<AppState>) {
@@ -24,6 +25,7 @@ export class ListaDestinosComponent implements OnInit {
           this.updates.push('Se ha elegido a ' + d.n);
       }
     });
+    store.select(state => state.destinos.items).subscribe(items => this.all = items);
   }
 
 
@@ -32,13 +34,14 @@ export class ListaDestinosComponent implements OnInit {
 
   agregado(d: DestinoViaje): void {
     this.destinosApiClient.add(d);
-    this.onItemAdded.emit(d);
-    this.store.dispatch(new NuevoDestinoAction(d));
   }
 
   elegido(e: DestinoViaje): void {
     this.destinosApiClient.elegir(e);
-    this.store.dispatch(new ElegidoFavoritoAction(e));
+  }
+
+  getAll() {
+
   }
 
 
