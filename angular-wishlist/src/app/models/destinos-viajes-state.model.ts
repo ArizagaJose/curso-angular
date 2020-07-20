@@ -4,7 +4,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DestinoViaje } from './destino-viaje.model';
-import { DestinosApiClient } from './destinos-api-client.model';
+
 import { HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 
 // ESTADO
@@ -52,7 +52,12 @@ export class VoteDownAction implements Action {
   constructor(public destino: DestinoViaje) { }
 }
 
-export type DestinosViajesActions = NuevoDestinoAction | ElegidoFavoritoAction | VoteUpAction | VoteDownAction;
+export class InitMyDataAction implements Action {
+  type = DestinosViajesActionTypes.INIT_MY_DATA;
+  constructor(public destinos: string[]) {}
+}
+
+export type DestinosViajesActions = NuevoDestinoAction | ElegidoFavoritoAction | VoteUpAction | VoteDownAction | InitMyDataAction;
 
 // REDUCERS
 export function reducerDestinosViajes(
@@ -86,6 +91,14 @@ export function reducerDestinosViajes(
       const d: DestinoViaje = (action as VoteDownAction).destino;
       d.voteDown();
       return { ...state };
+    }
+
+    case DestinosViajesActionTypes.INIT_MY_DATA: {
+      const destinos: string[] = (action as InitMyDataAction).destinos;
+      return {
+          ...state,
+          items: destinos.map((d) => new DestinoViaje(d, ''))
+        };
     }
   }
   return state;
