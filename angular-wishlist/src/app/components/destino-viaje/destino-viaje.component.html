@@ -21,8 +21,9 @@
             <a href="#" (click)="voteDown()"><i class="material-icons md-18">thumb_down</i></a>
             {{destino.votes}}
         </div>
+        <p></p>
         <a href="#" class="btn-card" (click)="ir()">Ir!</a>
         <span *ngIf="destino.isSelected()">-FAVORITO-</span>
-        <a [routerLink]="['/destino', destino.id]">Ver!</a>
+        <a [routerLink]="['/destino', destino.id]">     Ver!</a>
     </div>
 </div>
