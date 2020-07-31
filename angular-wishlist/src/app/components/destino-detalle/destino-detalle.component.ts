@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
+import { DestinosApiClient } from './../../models/destinos-api-client.model';
+import { DestinoViaje } from './../../models/destino-viaje.model';
 import { ActivatedRoute } from '@angular/router';
-import { DestinoViaje } from 'src/app/models/destino-viaje.model';
-import { DestinosApiClient } from 'src/app/models/destinos-api-client.model';
 
 @Component({
   selector: 'app-destino-detalle',
@@ -11,12 +11,29 @@ import { DestinosApiClient } from 'src/app/models/destinos-api-client.model';
 })
 export class DestinoDetalleComponent implements OnInit {
   destino: DestinoViaje;
+  style = {
+    sources: {
+      world: {
+        type: 'geojson',
+        data: 'https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json'
 
-  constructor(private route: ActivatedRoute, private destinosapiClient: DestinosApiClient) { }
+      }
+    },
+    version: 8,
+    layers: [{
+      'id': 'countries',
+      'type': 'fill',
+      'source': 'world',
+      'layout': {},
+      'paint': {
+        'fill-color': '#6F788A'
+      }
+    }]
+  };
+
+  constructor(private route: ActivatedRoute, private destinosApiClient: DestinosApiClient) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.destino = this.destinosapiClient.getById(id);
   }
 
 }
